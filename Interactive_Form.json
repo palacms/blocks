@@ -1,0 +1,236 @@
+{
+  "id": "blhoijlhb905vkc",
+  "name": "Interactive Form",
+  "js": "import slugify from \"slugify\";\n\nlet status = $state(\"idle\"); // \"idle\" | \"loading\" | \"success\" | \"error\"\nlet message = $state(\"\");\nasync function handleSubmit(e) {\n  e.preventDefault();\n  status = \"loading\";\n  message = \"\";\n\n  const form = e.target;\n  const form_data = new FormData(form);\n\n  try {\n    const res = await fetch(form_endpoint, {\n      method: \"POST\",\n      body: form_data,\n      headers: { Accept: \"application/json\" },\n    });\n\n    if (res.ok) {\n      status = \"success\";\n      form.reset();\n    } else {\n      const err = await res.json().catch(() => ({}));\n      status = \"error\";\n      message = err.message;\n    }\n  } catch {\n    status = \"error\";\n    message = \"Network error. Please check your connection.\";\n  }\n}\n\nfunction slugify_name(text) {\n  return slugify(text, {\n    replacement: \"_\", // replace spaces with underscores\n    lower: false, // convert to lowercase\n    strict: true, // remove special chars\n  });\n}\n\n// Auto-grow textarea fields on input\nfunction autogrow(node) {\n  function resize() {\n    node.style.height = \"auto\";\n    node.style.height = node.scrollHeight + \"px\";\n  }\n\n  // Grow once on mount and whenever input changes\n  resize();\n  node.addEventListener(\"input\", resize);\n\n  return {\n    destroy() {\n      node.removeEventListener(\"input\", resize);\n    },\n  };\n}\n",
+  "css": "@import url(https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css);\n\n.container {\n  padding-block: 2rem;\n}\n\n.success_state {\n  padding: 1rem;\n  border: 1px solid var(--theme-primary-color, white);\n  border-radius: var(--theme-border-radius, 0.25rem);\n}\n\n.error_state  {\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n  gap: 1rem; \n}",
+  "html": "<div class=\"container\">\n  {#if status === \"success\"}\n    <div class=\"success_state\">\n      {@html messages.success}\n    </div>\n  {:else if status === \"error\"}\n    <div class=\"error_state\">\n      <div>{@html messages.error}</div>\n      {#if message}\n        <p>{message}</p>\n      {/if}\n      <button type=\"button\" on:click={() => (status = \"idle\")}>\n        Try again\n      </button>\n    </div>\n  {:else}\n    <form action={form_endpoint} on:submit={handleSubmit}>\n      {#each form_fields as field}\n        {#if field.type === \"textarea\"}\n          <label>\n            <span>{field.label}</span>\n            <textarea\n              name={slugify_name(field.label)}\n              placeholder={field.placeholder}\n              required={field.required}\n              use:autogrow></textarea>\n          </label>\n        {:else}\n          <label>\n            <span>{field.label}</span>\n            <input\n              name={slugify_name(field.label)}\n              type={field.type || \"text\"}\n              placeholder={field.placeholder}\n              required={field.required} />\n          </label>\n        {/if}\n      {/each}\n\n      <button type=\"submit\" disabled={status === \"loading\"}>\n        {status === \"loading\" ? \"Sending…\" : \"Submit\"}\n      </button>\n    </form>\n  {/if}\n</div>\n",
+  "site": "u23mt3pr7oq353k",
+  "compiled_js": "",
+  "fields": [
+    {
+      "id": "8us6md5584siaf0",
+      "key": "form_fields",
+      "label": "Form Fields",
+      "type": "repeater",
+      "config": {},
+      "parent": "",
+      "index": 0,
+      "symbol": "blhoijlhb905vkc"
+    },
+    {
+      "id": "7xtcowl4z9lkt0m",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "config": {},
+      "parent": "8us6md5584siaf0",
+      "index": 0,
+      "symbol": "blhoijlhb905vkc"
+    },
+    {
+      "id": "so4d6y0rgz1kfjv",
+      "key": "placeholder",
+      "label": "Placeholder",
+      "type": "text",
+      "config": {},
+      "parent": "8us6md5584siaf0",
+      "index": 1,
+      "symbol": "blhoijlhb905vkc"
+    },
+    {
+      "id": "c1ddehu73eg24z2",
+      "key": "type",
+      "label": "Type",
+      "type": "select",
+      "config": {
+        "options": [
+          {
+            "value": "text",
+            "label": "Text",
+            "icon": "humbleicons:text"
+          },
+          {
+            "value": "email",
+            "label": "Email",
+            "icon": "ic:baseline-email"
+          },
+          {
+            "value": "phone",
+            "label": "Phone",
+            "icon": "ic:baseline-phone"
+          },
+          {
+            "value": "textarea",
+            "label": "Textarea",
+            "icon": "bi:textarea-t"
+          }
+        ]
+      },
+      "parent": "8us6md5584siaf0",
+      "index": 2,
+      "symbol": "blhoijlhb905vkc"
+    },
+    {
+      "id": "65ttpe04sf5ufvl",
+      "key": "form_endpoint",
+      "label": "Form Endpoint",
+      "type": "text",
+      "config": {},
+      "parent": "",
+      "index": 1,
+      "symbol": "blhoijlhb905vkc"
+    },
+    {
+      "id": "v9xs8v885yp0b5p",
+      "key": "messages",
+      "label": "Messages",
+      "type": "group",
+      "config": null,
+      "parent": "",
+      "index": 3,
+      "symbol": "blhoijlhb905vkc"
+    },
+    {
+      "id": "10519h6x67rxuzs",
+      "key": "success",
+      "label": "Success",
+      "type": "text",
+      "config": null,
+      "parent": "v9xs8v885yp0b5p",
+      "index": 0,
+      "symbol": "blhoijlhb905vkc"
+    },
+    {
+      "id": "2pwjq335mae7n8j",
+      "key": "error",
+      "label": "Error",
+      "type": "text",
+      "config": null,
+      "parent": "v9xs8v885yp0b5p",
+      "index": 1,
+      "symbol": "blhoijlhb905vkc"
+    }
+  ],
+  "entries": [
+    {
+      "id": "uvcntr20cz3p2vi",
+      "locale": "en",
+      "value": null,
+      "field": "8us6md5584siaf0",
+      "parent": "",
+      "index": 0
+    },
+    {
+      "id": "yntdaepzbw3cv97",
+      "locale": "en",
+      "value": null,
+      "field": "8us6md5584siaf0",
+      "parent": "",
+      "index": 1
+    },
+    {
+      "id": "c6h86aqrsvityd7",
+      "locale": "en",
+      "value": null,
+      "field": "8us6md5584siaf0",
+      "parent": "",
+      "index": 2
+    },
+    {
+      "id": "6txhdssiv15l4z5",
+      "locale": "en",
+      "value": "Name",
+      "field": "7xtcowl4z9lkt0m",
+      "parent": "uvcntr20cz3p2vi",
+      "index": 0
+    },
+    {
+      "id": "o81ikw78404e8kx",
+      "locale": "en",
+      "value": "Email",
+      "field": "7xtcowl4z9lkt0m",
+      "parent": "yntdaepzbw3cv97",
+      "index": 0
+    },
+    {
+      "id": "v2uds0ivbrhxebv",
+      "locale": "en",
+      "value": "Message",
+      "field": "7xtcowl4z9lkt0m",
+      "parent": "c6h86aqrsvityd7",
+      "index": 0
+    },
+    {
+      "id": "oehw5w61io36g8y",
+      "locale": "en",
+      "value": "John Doe",
+      "field": "so4d6y0rgz1kfjv",
+      "parent": "uvcntr20cz3p2vi",
+      "index": 0
+    },
+    {
+      "id": "vdajn6qmnc2w5iy",
+      "locale": "en",
+      "value": "jdoe@email.com",
+      "field": "so4d6y0rgz1kfjv",
+      "parent": "yntdaepzbw3cv97",
+      "index": 0
+    },
+    {
+      "id": "gssamm6e0i4krhi",
+      "locale": "en",
+      "value": "Hello I would like to...",
+      "field": "so4d6y0rgz1kfjv",
+      "parent": "c6h86aqrsvityd7",
+      "index": 0
+    },
+    {
+      "id": "5hy2tnb7igwgar5",
+      "locale": "en",
+      "value": "email",
+      "field": "c1ddehu73eg24z2",
+      "parent": "yntdaepzbw3cv97",
+      "index": 0
+    },
+    {
+      "id": "hcszx4martiikh4",
+      "locale": "en",
+      "value": "textarea",
+      "field": "c1ddehu73eg24z2",
+      "parent": "c6h86aqrsvityd7",
+      "index": 0
+    },
+    {
+      "id": "g8ebga38x34mj45",
+      "locale": "en",
+      "value": "https://formspree.io/f/abcd1234",
+      "field": "65ttpe04sf5ufvl",
+      "parent": "",
+      "index": 0
+    },
+    {
+      "id": "wprfjoenlp8yvce",
+      "locale": "en",
+      "value": null,
+      "field": "v9xs8v885yp0b5p",
+      "parent": "",
+      "index": 0
+    },
+    {
+      "id": "pdpqann7760nt2c",
+      "locale": "en",
+      "value": "Thanks for reaching out — we’ll get back to you soon.",
+      "field": "10519h6x67rxuzs",
+      "parent": "wprfjoenlp8yvce",
+      "index": 0
+    },
+    {
+      "id": "czwyg55sko08d4h",
+      "locale": "en",
+      "value": "⚠️ Something went wrong.",
+      "field": "2pwjq335mae7n8j",
+      "parent": "wprfjoenlp8yvce",
+      "index": 0
+    }
+  ]
+}
