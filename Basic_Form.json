@@ -1,0 +1,182 @@
+{
+  "id": "fsvkgnyqtg9t6ho",
+  "name": "Basic Form",
+  "js": "import slugify from \"slugify\";\n\nfunction slugify_name(text) {\n  return slugify(text, {\n    replacement: \"_\", // replace spaces with underscores\n    lower: false, // convert to lowercase\n    strict: true, // remove special chars\n  });\n}\n\n// Auto-grow textarea fields on input\nfunction autogrow(node) {\n  function resize() {\n    node.style.height = \"auto\";\n    node.style.height = node.scrollHeight + \"px\";\n  }\n\n  // Grow once on mount and whenever input changes\n  resize();\n  node.addEventListener(\"input\", resize);\n\n  return {\n    destroy() {\n      node.removeEventListener(\"input\", resize);\n    },\n  };\n}\n",
+  "css": "@import url(https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css);\n\n.container {\n  padding-block: 2rem;\n}",
+  "html": "<div class=\"container\">\n  <form action={form_endpoint} method=\"POST\">\n    {#each form_fields as field, i}\n      {#if field.type === \"textarea\"}\n        <label\n          ><span>{field.label}</span>\n          <textarea\n            name={slugify_name(field.label)}\n            placeholder={field.placeholder}\n            required={field.required}\n            use:autogrow></textarea>\n        </label> \n      {:else}\n        <label\n          ><span>{field.label}</span>\n          <input\n            name={slugify_name(field.label)}\n            type={field.type || \"text\"}\n            placeholder={field.placeholder}\n            required={field.required} />\n        </label>\n      {/if}\n    {/each}\n    <button type=\"submit\">Submit</button>\n  </form>\n</div>\n",
+  "site": "acwh2ttxy5uo8z1",
+  "compiled_js": "",
+  "fields": [
+    {
+      "id": "d5dxc8jcalynr3b",
+      "key": "form_fields",
+      "label": "Form Fields",
+      "type": "repeater",
+      "config": null,
+      "parent": "",
+      "index": 0,
+      "symbol": "fsvkgnyqtg9t6ho"
+    },
+    {
+      "id": "84ehq81gfb0wnbp",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "config": null,
+      "parent": "d5dxc8jcalynr3b",
+      "index": 0,
+      "symbol": "fsvkgnyqtg9t6ho"
+    },
+    {
+      "id": "f3y8gzeo0udk7yf",
+      "key": "placeholder",
+      "label": "Placeholder",
+      "type": "text",
+      "config": null,
+      "parent": "d5dxc8jcalynr3b",
+      "index": 1,
+      "symbol": "fsvkgnyqtg9t6ho"
+    },
+    {
+      "id": "eqnw9zerqnkw0gr",
+      "key": "type",
+      "label": "Type",
+      "type": "select",
+      "config": {
+        "options": [
+          {
+            "value": "text",
+            "label": "Text",
+            "icon": "humbleicons:text"
+          },
+          {
+            "value": "email",
+            "label": "Email",
+            "icon": "ic:baseline-email"
+          },
+          {
+            "value": "phone",
+            "label": "Phone",
+            "icon": "ic:baseline-phone"
+          },
+          {
+            "value": "textarea",
+            "label": "Textarea",
+            "icon": "bi:textarea-t"
+          }
+        ]
+      },
+      "parent": "d5dxc8jcalynr3b",
+      "index": 2,
+      "symbol": "fsvkgnyqtg9t6ho"
+    },
+    {
+      "id": "l4eq1bd796b9p4q",
+      "key": "form_endpoint",
+      "label": "Form Endpoint",
+      "type": "text",
+      "config": null,
+      "parent": "",
+      "index": 1,
+      "symbol": "fsvkgnyqtg9t6ho"
+    }
+  ],
+  "entries": [
+    {
+      "id": "b9i4d9wiq3q0ipg",
+      "locale": "en",
+      "value": null,
+      "field": "d5dxc8jcalynr3b",
+      "parent": "",
+      "index": 0
+    },
+    {
+      "id": "bhi21ix6ft42yfu",
+      "locale": "en",
+      "value": null,
+      "field": "d5dxc8jcalynr3b",
+      "parent": "",
+      "index": 1
+    },
+    {
+      "id": "kg3wjy5vp20ul58",
+      "locale": "en",
+      "value": null,
+      "field": "d5dxc8jcalynr3b",
+      "parent": "",
+      "index": 2
+    },
+    {
+      "id": "kbf1tgv198d3jd6",
+      "locale": "en",
+      "value": "Name",
+      "field": "84ehq81gfb0wnbp",
+      "parent": "b9i4d9wiq3q0ipg",
+      "index": 0
+    },
+    {
+      "id": "pnqu184urgk1sm4",
+      "locale": "en",
+      "value": "Email",
+      "field": "84ehq81gfb0wnbp",
+      "parent": "bhi21ix6ft42yfu",
+      "index": 0
+    },
+    {
+      "id": "0ei6e5kqwjgbci2",
+      "locale": "en",
+      "value": "Message",
+      "field": "84ehq81gfb0wnbp",
+      "parent": "kg3wjy5vp20ul58",
+      "index": 0
+    },
+    {
+      "id": "gwyom30zq812b25",
+      "locale": "en",
+      "value": "John Doe",
+      "field": "f3y8gzeo0udk7yf",
+      "parent": "b9i4d9wiq3q0ipg",
+      "index": 0
+    },
+    {
+      "id": "oqormwac9bonulm",
+      "locale": "en",
+      "value": "jdoe@email.com",
+      "field": "f3y8gzeo0udk7yf",
+      "parent": "bhi21ix6ft42yfu",
+      "index": 0
+    },
+    {
+      "id": "djhytravhetlft5",
+      "locale": "en",
+      "value": "Hello I would like to...",
+      "field": "f3y8gzeo0udk7yf",
+      "parent": "kg3wjy5vp20ul58",
+      "index": 0
+    },
+    {
+      "id": "5fvq4d9dtyoqrf3",
+      "locale": "en",
+      "value": "email",
+      "field": "eqnw9zerqnkw0gr",
+      "parent": "bhi21ix6ft42yfu",
+      "index": 0
+    },
+    {
+      "id": "asedr44kp68p0uz",
+      "locale": "en",
+      "value": "textarea",
+      "field": "eqnw9zerqnkw0gr",
+      "parent": "kg3wjy5vp20ul58",
+      "index": 0
+    },
+    {
+      "id": "xhwxnb9ggs3qq5b",
+      "locale": "en",
+      "value": "https://formspree.io/f/abcd1234",
+      "field": "l4eq1bd796b9p4q",
+      "parent": "",
+      "index": 0
+    }
+  ]
+}
