@@ -1,0 +1,182 @@
+{
+  "id": "305z337lo8wfhm7",
+  "name": "Email Form",
+  "js": "import slugify from \"slugify\";\n\nfunction handleEmailSubmit(e) {\n  e.preventDefault();\n  const form = e.target;\n  const data = new FormData(form);\n\n  let body = \"\";\n  for (const [key, value] of data.entries()) {\n    body += `${key}: ${value}\\n`;\n  }\n\n  const subject_field = data.get(\"subject\") || \"New message from your website\";\n  const mailto = `mailto:${email_address}?subject=${encodeURIComponent(\n    subject_field,\n  )}&body=${encodeURIComponent(body)}`;\n\n  window.location.href = mailto;\n}\n\nfunction slugify_name(text) {\n  return slugify(text, {\n    replacement: \"_\", // replace spaces with underscores\n    lower: false, // convert to lowercase\n    strict: true, // remove special chars\n  });\n}\n\n// Auto-grow textarea fields on input\nfunction autogrow(node) {\n  function resize() {\n    node.style.height = \"auto\";\n    node.style.height = node.scrollHeight + \"px\";\n  }\n\n  // Grow once on mount and whenever input changes\n  resize();\n  node.addEventListener(\"input\", resize);\n\n  return {\n    destroy() {\n      node.removeEventListener(\"input\", resize);\n    },\n  };\n}\n",
+  "css": "@import url(https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css);\n\n.container {\n  padding-block: 2rem;\n}",
+  "html": "<div class=\"container\">\n  <form onsubmit={handleEmailSubmit} enctype=\"text/plain\">\n    {#each form_fields as field, i}\n      {#if field.type === \"textarea\"}\n        <label\n          ><span>{field.label}</span>\n          <textarea\n            name={slugify_name(field.label)}\n            placeholder={field.placeholder}\n            required={field.required}\n            use:autogrow></textarea>\n        </label> \n      {:else}\n        <label\n          ><span>{field.label}</span>\n          <input\n            name={slugify_name(field.label)}\n            type={field.type || \"text\"}\n            placeholder={field.placeholder}\n            required={field.required} />\n        </label>\n      {/if}\n    {/each}\n    <button type=\"submit\">Submit</button>\n  </form>\n</div>\n",
+  "site": "u23mt3pr7oq353k",
+  "compiled_js": "",
+  "fields": [
+    {
+      "id": "madoplj461ggl0c",
+      "key": "form_fields",
+      "label": "Form Fields",
+      "type": "repeater",
+      "config": {},
+      "parent": "",
+      "index": 0,
+      "symbol": "305z337lo8wfhm7"
+    },
+    {
+      "id": "8ipljemixtx8ozw",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "config": {},
+      "parent": "madoplj461ggl0c",
+      "index": 0,
+      "symbol": "305z337lo8wfhm7"
+    },
+    {
+      "id": "bfzlzo544n49heq",
+      "key": "placeholder",
+      "label": "Placeholder",
+      "type": "text",
+      "config": {},
+      "parent": "madoplj461ggl0c",
+      "index": 1,
+      "symbol": "305z337lo8wfhm7"
+    },
+    {
+      "id": "bl9en7wzjfpbaog",
+      "key": "type",
+      "label": "Type",
+      "type": "select",
+      "config": {
+        "options": [
+          {
+            "value": "text",
+            "label": "Text",
+            "icon": "humbleicons:text"
+          },
+          {
+            "value": "email",
+            "label": "Email",
+            "icon": "ic:baseline-email"
+          },
+          {
+            "value": "phone",
+            "label": "Phone",
+            "icon": "ic:baseline-phone"
+          },
+          {
+            "value": "textarea",
+            "label": "Textarea",
+            "icon": "bi:textarea-t"
+          }
+        ]
+      },
+      "parent": "madoplj461ggl0c",
+      "index": 2,
+      "symbol": "305z337lo8wfhm7"
+    },
+    {
+      "id": "kw82ybz524vupmq",
+      "key": "email_address",
+      "label": "Email Address",
+      "type": "text",
+      "config": {},
+      "parent": "",
+      "index": 1,
+      "symbol": "305z337lo8wfhm7"
+    }
+  ],
+  "entries": [
+    {
+      "id": "55e943sv56favjm",
+      "locale": "en",
+      "value": null,
+      "field": "madoplj461ggl0c",
+      "parent": "",
+      "index": 0
+    },
+    {
+      "id": "j8hbdwwss7f0l2r",
+      "locale": "en",
+      "value": null,
+      "field": "madoplj461ggl0c",
+      "parent": "",
+      "index": 1
+    },
+    {
+      "id": "av2w6yxq8uzlh4d",
+      "locale": "en",
+      "value": null,
+      "field": "madoplj461ggl0c",
+      "parent": "",
+      "index": 2
+    },
+    {
+      "id": "rauk93huw9sl0ez",
+      "locale": "en",
+      "value": "Name",
+      "field": "8ipljemixtx8ozw",
+      "parent": "55e943sv56favjm",
+      "index": 0
+    },
+    {
+      "id": "ovhzv0es0pvc6m0",
+      "locale": "en",
+      "value": "Email",
+      "field": "8ipljemixtx8ozw",
+      "parent": "j8hbdwwss7f0l2r",
+      "index": 0
+    },
+    {
+      "id": "pcl1lgq69gjhvts",
+      "locale": "en",
+      "value": "Message",
+      "field": "8ipljemixtx8ozw",
+      "parent": "av2w6yxq8uzlh4d",
+      "index": 0
+    },
+    {
+      "id": "eus391peqvhs11n",
+      "locale": "en",
+      "value": "John Doe",
+      "field": "bfzlzo544n49heq",
+      "parent": "55e943sv56favjm",
+      "index": 0
+    },
+    {
+      "id": "2xf8vnnorx66bh5",
+      "locale": "en",
+      "value": "jdoe@email.com",
+      "field": "bfzlzo544n49heq",
+      "parent": "j8hbdwwss7f0l2r",
+      "index": 0
+    },
+    {
+      "id": "wa16ehugiy6xc8u",
+      "locale": "en",
+      "value": "Hello I would like to...",
+      "field": "bfzlzo544n49heq",
+      "parent": "av2w6yxq8uzlh4d",
+      "index": 0
+    },
+    {
+      "id": "qmpjii5kvorvf4u",
+      "locale": "en",
+      "value": "email",
+      "field": "bl9en7wzjfpbaog",
+      "parent": "j8hbdwwss7f0l2r",
+      "index": 0
+    },
+    {
+      "id": "5dgiyfuacnh89wp",
+      "locale": "en",
+      "value": "textarea",
+      "field": "bl9en7wzjfpbaog",
+      "parent": "av2w6yxq8uzlh4d",
+      "index": 0
+    },
+    {
+      "id": "c3u7q2l7gh8e9gx",
+      "locale": "en",
+      "value": "hello@example.com",
+      "field": "kw82ybz524vupmq",
+      "parent": "",
+      "index": 0
+    }
+  ]
+}
